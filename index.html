@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طلب محاصيل صُوَاع</title>
+    <title>طلب محاصيل صُوَاع - جملة</title>
     <style>
         :root { --primary: #6f4e37; --bg: #fdfaf7; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); padding: 20px; display: flex; justify-content: center; }
-        .card { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 480px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-top: 6px solid var(--primary); }
-        h2 { color: var(--primary); text-align: center; }
-        label { display: block; margin: 15px 0 5px; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .card { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 500px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); border-top: 6px solid var(--primary); }
+        h2 { color: var(--primary); text-align: center; margin-bottom: 20px; }
+        
+        .product-preview { text-align: center; background: #fff; border: 1px solid #eee; border-radius: 10px; margin-bottom: 20px; padding: 10px; min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        #productImage { max-width: 100%; max-height: 180px; object-fit: contain; display: none; }
+        #placeholder { color: #888; }
+
+        label { display: block; margin: 12px 0 5px; font-weight: bold; }
         input, select, button { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; box-sizing: border-box; }
         
-        /* تنسيق الصورة */
-        .image-container { text-align: center; margin: 20px 0; min-height: 150px; display: flex; justify-content: center; align-items: center; background: #f9f9f9; border-radius: 10px; overflow: hidden; }
-        #productImage { max-width: 100%; max-height: 200px; display: none; transition: transform 0.3s; }
-        #productImage.show { display: block; }
-        
-        .price-tag { background: #f0ebe5; padding: 12px; border-radius: 8px; margin-top: 10px; text-align: center; font-weight: bold; color: var(--primary); display: none; }
-        button { background: var(--primary); color: white; border: none; margin-top: 20px; cursor: pointer; font-weight: bold; }
+        button { background: var(--primary); color: white; border: none; margin-top: 25px; cursor: pointer; font-weight: bold; font-size: 17px; transition: 0.3s; }
+        button:hover { background: #5d4030; }
         #msg { text-align: center; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
@@ -27,30 +27,51 @@
 <div class="card">
     <h2>طلب محاصيل صُوَاع ☕</h2>
     
-    <div class="image-container">
-        <img id="productImage" src="" alt="صورة المحصول">
-        <span id="placeholderText">اختر محصولاً لرؤية الصورة</span>
+    <div class="product-preview">
+        <img id="productImage" src="" alt="المحصول">
+        <div id="placeholder">اختر المحصول لرؤية الصورة</div>
     </div>
 
     <form id="orderForm">
         <label>الاسم الكامل</label>
         <input type="text" id="name" placeholder="أدخل اسمك" required>
 
-        <label>اختر المحصول</label>
-        <select id="coffeeType" onchange="updateUI()" required>
-            <option value="" data-price="0" data-img="">-- اختر المحصول --</option>
-            <option value="كينيا تشيروتو" data-price="63" data-img="https://suwaab2b.com/path-to-kenya-image.jpg">كينيا تشيروتو (63 ريال)</option>
-            <option value="هندوراس قيشا" data-price="65" data-img="https://suwaab2b.com/path-to-geisha-image.jpg">هندوراس قيشا (65 ريال)</option>
-            <option value="إثيوبيا قوجي" data-price="50" data-img="https://suwaab2b.com/path-to-goji-image.jpg">إثيوبيا قوجي (50 ريال)</option>
-            <option value="إثيوبيا همبيلا" data-price="50" data-img="https://suwaab2b.com/path-to-hambela-image.jpg">إثيوبيا همبيلا (50 ريال)</option>
+        <label>اختر المحصول (وزن 1 كيلو)</label>
+        <select id="coffeeType" onchange="updateView()" required>
+            <option value="" data-img="">-- اختر المحصول --</option>
+            
+            <optgroup label="محاصيل الفلتر">
+                <option value="هندوراس - فيرناندز قيشا" data-img="https://cdn.salla.sa/pZREK/lF5S2yQ7V0N8vX9Yh5MvF3fP3f3f.jpg">هندوراس - فيرناندز قيشا</option>
+                <option value="كينيا - تشيروتو" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">كينيا - تشيروتو</option>
+                <option value="ميانمار - با-اوه" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">ميانمار - با-اوه</option>
+                <option value="إثيوبيا - همبيلا بوكو (فلتر)" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">إثيوبيا - همبيلا بوكو</option>
+                <option value="كوستاريكا - كاسا دي بيدرا" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">كوستاريكا - كاسا دي بيدرا</option>
+                <option value="إثيوبيا - قوجي قوقوجو" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">إثيوبيا - قوجي قوقوجو</option>
+                <option value="كولومبيا - لا سانتا" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">كولومبيا - لا سانتا</option>
+                <option value="اليمن - حراز" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">اليمن - حراز</option>
+                <option value="برازيل - مورادا" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">برازيل - مورادا</option>
+            </optgroup>
+
+            <optgroup label="محاصيل الإسبريسو">
+                <option value="السلفادور - ديفيساديرو" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">السلفادور - ديفيساديرو</option>
+                <option value="كوستاريكا - اسوبروا" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">كوستاريكا - اسوبروا</option>
+                <option value="إثيوبيا - همبيلا بوكو (إسبريسو)" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">إثيوبيا - همبيلا بوكو</option>
+                <option value="خليط اسبريسو صواع" data-img="https://cdn.salla.sa/pZREK/q8vX9Yh5MvF3fP3f3f.jpg">خليط اسبريسو</option>
+            </optgroup>
         </select>
 
-        <label>الكمية</label>
-        <input type="number" id="quantity" value="1" min="1" onchange="updateUI()" required>
+        <label>درجة الطحن</label>
+        <select id="grindType" required>
+            <option value="حبوب كاملة">حبوب كاملة (بدون طحن)</option>
+            <option value="طحنة إسبريسو">طحنة إسبريسو</option>
+            <option value="طحنة فلتر (V60)">طحنة فلتر (V60)</option>
+            <option value="طحنة كيمكس">طحنة كيمكس</option>
+        </select>
 
-        <div id="priceDisplay" class="price-tag"></div>
+        <label>الكمية (عدد الكيلوات)</label>
+        <input type="number" id="quantity" value="1" min="1" required>
 
-        <button type="submit" id="submitBtn">تأكيد الطلب</button>
+        <button type="submit" id="submitBtn">إرسال الطلب</button>
     </form>
     <div id="msg"></div>
 </div>
@@ -58,40 +79,49 @@
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwVLJoK34zFtvdVeXLNhoonx7sSVy8wfFIDwvo0xUII0zqE632jtwIMKX4QqxwoIohd5Q/exec';
 
-    function updateUI() {
+    function updateView() {
         const select = document.getElementById('coffeeType');
-        const selectedOption = select.options[select.selectedIndex];
-        
-        const price = selectedOption.getAttribute('data-price');
-        const imgUrl = selectedOption.getAttribute('data-img');
-        const qty = document.getElementById('quantity').value;
-        
-        const imgElement = document.getElementById('productImage');
-        const placeholder = document.getElementById('placeholderText');
-        const priceDisplay = document.getElementById('priceDisplay');
+        const imgUrl = select.options[select.selectedIndex].getAttribute('data-img');
+        const img = document.getElementById('productImage');
+        const placeholder = document.getElementById('placeholder');
 
-        // تحديث الصورة
-        if (imgUrl) {
-            imgElement.src = imgUrl;
-            imgElement.classList.add('show');
+        if (imgUrl && imgUrl !== "") {
+            img.src = imgUrl;
+            img.style.display = 'block';
             placeholder.style.display = 'none';
         } else {
-            imgElement.classList.remove('show');
+            img.style.display = 'none';
             placeholder.style.display = 'block';
-        }
-
-        // تحديث السعر
-        if (price > 0) {
-            priceDisplay.style.display = 'block';
-            priceDisplay.innerHTML = `الإجمالي: ${price * qty} ريال`;
-        } else {
-            priceDisplay.style.display = 'none';
         }
     }
 
     document.getElementById('orderForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        // كود الإرسال إلى Google Sheets (كما في الرد السابق)
+        const btn = document.getElementById('submitBtn');
+        const msg = document.getElementById('msg');
+        btn.disabled = true;
+        msg.innerHTML = "جاري إرسال الطلب...";
+
+        const data = {
+            name: document.getElementById('name').value,
+            coffeeType: document.getElementById('coffeeType').value,
+            grind: document.getElementById('grindType').value,
+            quantity: document.getElementById('quantity').value
+        };
+
+        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data)})
+        .then(() => {
+            msg.style.color = "green";
+            msg.innerHTML = "تم بنجاح! سيتم التواصل معك قريباً ✅";
+            this.reset();
+            updateView();
+            btn.disabled = false;
+        })
+        .catch(() => {
+            msg.style.color = "red";
+            msg.innerHTML = "حدث خطأ في الاتصال.";
+            btn.disabled = false;
+        });
     });
 </script>
 
