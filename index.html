@@ -3,99 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طلب محاصيل محمصة صُوَاع</title>
+    <title>طلب محاصيل صُوَاع</title>
     <style>
-        :root { --primary-color: #6f4e37; --bg-color: #f8f5f2; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .form-container { background: white; padding: 30px; border-radius: 15px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid var(--primary-color); }
-        h2 { text-align: center; color: var(--primary-color); margin-bottom: 25px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9em; }
-        input, select, button { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        input:focus, select:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 5px rgba(111, 78, 55, 0.2); }
-        button { background-color: var(--primary-color); color: white; border: none; cursor: pointer; font-weight: bold; transition: background 0.3s; margin-top: 10px; }
-        button:hover { background-color: #5d4030; }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-        #msg { text-align: center; font-weight: bold; margin-top: 10px; }
-        .success { color: #28a745; }
-        .error { color: #dc3545; }
+        :root { --primary: #6f4e37; --bg: #fdfaf7; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); padding: 20px; display: flex; justify-content: center; }
+        .card { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 480px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-top: 6px solid var(--primary); }
+        h2 { color: var(--primary); text-align: center; }
+        label { display: block; margin: 15px 0 5px; font-weight: bold; }
+        input, select, button { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; box-sizing: border-box; }
+        
+        /* تنسيق الصورة */
+        .image-container { text-align: center; margin: 20px 0; min-height: 150px; display: flex; justify-content: center; align-items: center; background: #f9f9f9; border-radius: 10px; overflow: hidden; }
+        #productImage { max-width: 100%; max-height: 200px; display: none; transition: transform 0.3s; }
+        #productImage.show { display: block; }
+        
+        .price-tag { background: #f0ebe5; padding: 12px; border-radius: 8px; margin-top: 10px; text-align: center; font-weight: bold; color: var(--primary); display: none; }
+        button { background: var(--primary); color: white; border: none; margin-top: 20px; cursor: pointer; font-weight: bold; }
+        #msg { text-align: center; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="form-container">
-        <h2>طلب محاصيل صُوَاع ☕</h2>
-        <form id="orderForm">
-            <label for="name">الاسم الكامل</label>
-            <input type="text" id="name" placeholder="أدخل اسمك هنا..." required>
-            
-            <label for="coffeeType">نوع المحصول</label>
-            <select id="coffeeType" required>
-                <option value="">-- اختر المحصول --</option>
-                <optgroup label="محاصيل الفلتر (Filter)">
-                    <option value="كينيا - تشيروتو">كينيا - تشيروتو (مجففة لاهوائية)</option>
-                    <option value="هندوراس - فيرناندز قيشا">هندوراس - فيرناندز قيشا</option>
-                    <option value="إثيوبيا - قوجي قوقوجو">إثيوبيا - قوجي قوقوجو (مغسولة)</option>
-                    <option value="السلفادور - إل كارمن">السلفادور - إل كارمن</option>
-                    <option value="كوستاريكا - كاسا دي بيدرا">كوستاريكا - كاسا دي بيدرا</option>
-                    <option value="اندونيسيا - بنير ميريا">اندونيسيا - بنير ميريا</option>
-                </optgroup>
-                <optgroup label="محاصيل الإسبريسو">
-                    <option value="إثيوبيا - همبيلا بوكو">إثيوبيا - همبيلا بوكو</option>
-                    <option value="رِفْقة - معتدل">رِفْقة - معتدل</option>
-                    <option value="رِفْقة - فاكهي">رِفْقة - فاكهي</option>
-                </optgroup>
-                <optgroup label="أخرى">
-                    <option value="بوكس القهوة السعودية">بوكس القهوة السعودية</option>
-                    <option value="أظرف القهوة المقطرة">أظرف القهوة المقطرة (منوعة)</option>
-                </optgroup>
-            </select>
-            
-            <label for="quantity">الكمية</label>
-            <input type="number" id="quantity" placeholder="مثلاً: 1 أو 2" min="1" required>
-            
-            <button type="submit" id="submitBtn">تأكيد الطلب</button>
-        </form>
-        <p id="msg"></p>
+<div class="card">
+    <h2>طلب محاصيل صُوَاع ☕</h2>
+    
+    <div class="image-container">
+        <img id="productImage" src="" alt="صورة المحصول">
+        <span id="placeholderText">اختر محصولاً لرؤية الصورة</span>
     </div>
 
-    <script>
-        // ضع الرابط الذي حصلت عليه من Google Apps Script هنا
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwVLJoK34zFtvdVeXLNhoonx7sSVy8wfFIDwvo0xUII0zqE632jtwIMKX4QqxwoIohd5Q/exec';
-        const form = document.getElementById('orderForm');
-        const msg = document.getElementById('msg');
-        const btn = document.getElementById('submitBtn');
+    <form id="orderForm">
+        <label>الاسم الكامل</label>
+        <input type="text" id="name" placeholder="أدخل اسمك" required>
 
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            btn.disabled = true;
-            msg.innerHTML = "جاري إرسال الطلب...";
-            msg.className = "";
+        <label>اختر المحصول</label>
+        <select id="coffeeType" onchange="updateUI()" required>
+            <option value="" data-price="0" data-img="">-- اختر المحصول --</option>
+            <option value="كينيا تشيروتو" data-price="63" data-img="https://suwaab2b.com/path-to-kenya-image.jpg">كينيا تشيروتو (63 ريال)</option>
+            <option value="هندوراس قيشا" data-price="65" data-img="https://suwaab2b.com/path-to-geisha-image.jpg">هندوراس قيشا (65 ريال)</option>
+            <option value="إثيوبيا قوجي" data-price="50" data-img="https://suwaab2b.com/path-to-goji-image.jpg">إثيوبيا قوجي (50 ريال)</option>
+            <option value="إثيوبيا همبيلا" data-price="50" data-img="https://suwaab2b.com/path-to-hambela-image.jpg">إثيوبيا همبيلا (50 ريال)</option>
+        </select>
 
-            const data = {
-                name: document.getElementById('name').value,
-                coffeeType: document.getElementById('coffeeType').value,
-                quantity: document.getElementById('quantity').value
-            };
+        <label>الكمية</label>
+        <input type="number" id="quantity" value="1" min="1" onchange="updateUI()" required>
 
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                cache: 'no-cache',
-                body: JSON.stringify(data)
-            })
-            .then(() => {
-                msg.innerHTML = "تم حفظ طلبك بنجاح في Google Sheets! ✅";
-                msg.className = "success";
-                form.reset();
-                btn.disabled = false;
-            })
-            .catch(error => {
-                msg.innerHTML = "حدث خطأ في الاتصال. حاول ثانية.";
-                msg.className = "error";
-                console.error('Error!', error.message);
-                btn.disabled = false;
-            });
-        });
-    </script>
+        <div id="priceDisplay" class="price-tag"></div>
+
+        <button type="submit" id="submitBtn">تأكيد الطلب</button>
+    </form>
+    <div id="msg"></div>
+</div>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwVLJoK34zFtvdVeXLNhoonx7sSVy8wfFIDwvo0xUII0zqE632jtwIMKX4QqxwoIohd5Q/exec';
+
+    function updateUI() {
+        const select = document.getElementById('coffeeType');
+        const selectedOption = select.options[select.selectedIndex];
+        
+        const price = selectedOption.getAttribute('data-price');
+        const imgUrl = selectedOption.getAttribute('data-img');
+        const qty = document.getElementById('quantity').value;
+        
+        const imgElement = document.getElementById('productImage');
+        const placeholder = document.getElementById('placeholderText');
+        const priceDisplay = document.getElementById('priceDisplay');
+
+        // تحديث الصورة
+        if (imgUrl) {
+            imgElement.src = imgUrl;
+            imgElement.classList.add('show');
+            placeholder.style.display = 'none';
+        } else {
+            imgElement.classList.remove('show');
+            placeholder.style.display = 'block';
+        }
+
+        // تحديث السعر
+        if (price > 0) {
+            priceDisplay.style.display = 'block';
+            priceDisplay.innerHTML = `الإجمالي: ${price * qty} ريال`;
+        } else {
+            priceDisplay.style.display = 'none';
+        }
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // كود الإرسال إلى Google Sheets (كما في الرد السابق)
+    });
+</script>
+
 </body>
 </html>
