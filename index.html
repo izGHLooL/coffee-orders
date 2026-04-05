@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب محاصيل محمصة صُوَاع</title>
+    <style>
+        :root { --primary-color: #6f4e37; --bg-color: #f8f5f2; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .form-container { background: white; padding: 30px; border-radius: 15px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid var(--primary-color); }
+        h2 { text-align: center; color: var(--primary-color); margin-bottom: 25px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9em; }
+        input, select, button { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        input:focus, select:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 5px rgba(111, 78, 55, 0.2); }
+        button { background-color: var(--primary-color); color: white; border: none; cursor: pointer; font-weight: bold; transition: background 0.3s; margin-top: 10px; }
+        button:hover { background-color: #5d4030; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        #msg { text-align: center; font-weight: bold; margin-top: 10px; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>طلب محاصيل صُوَاع ☕</h2>
+        <form id="orderForm">
+            <label for="name">الاسم الكامل</label>
+            <input type="text" id="name" placeholder="أدخل اسمك هنا..." required>
+            
+            <label for="coffeeType">نوع المحصول</label>
+            <select id="coffeeType" required>
+                <option value="">-- اختر المحصول --</option>
+                <optgroup label="محاصيل الفلتر (Filter)">
+                    <option value="كينيا - تشيروتو">كينيا - تشيروتو (مجففة لاهوائية)</option>
+                    <option value="هندوراس - فيرناندز قيشا">هندوراس - فيرناندز قيشا</option>
+                    <option value="إثيوبيا - قوجي قوقوجو">إثيوبيا - قوجي قوقوجو (مغسولة)</option>
+                    <option value="السلفادور - إل كارمن">السلفادور - إل كارمن</option>
+                    <option value="كوستاريكا - كاسا دي بيدرا">كوستاريكا - كاسا دي بيدرا</option>
+                    <option value="اندونيسيا - بنير ميريا">اندونيسيا - بنير ميريا</option>
+                </optgroup>
+                <optgroup label="محاصيل الإسبريسو">
+                    <option value="إثيوبيا - همبيلا بوكو">إثيوبيا - همبيلا بوكو</option>
+                    <option value="رِفْقة - معتدل">رِفْقة - معتدل</option>
+                    <option value="رِفْقة - فاكهي">رِفْقة - فاكهي</option>
+                </optgroup>
+                <optgroup label="أخرى">
+                    <option value="بوكس القهوة السعودية">بوكس القهوة السعودية</option>
+                    <option value="أظرف القهوة المقطرة">أظرف القهوة المقطرة (منوعة)</option>
+                </optgroup>
+            </select>
+            
+            <label for="quantity">الكمية</label>
+            <input type="number" id="quantity" placeholder="مثلاً: 1 أو 2" min="1" required>
+            
+            <button type="submit" id="submitBtn">تأكيد الطلب</button>
+        </form>
+        <p id="msg"></p>
+    </div>
+
+    <script>
+        // ضع الرابط الذي حصلت عليه من Google Apps Script هنا
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwVLJoK34zFtvdVeXLNhoonx7sSVy8wfFIDwvo0xUII0zqE632jtwIMKX4QqxwoIohd5Q/exec';
+        const form = document.getElementById('orderForm');
+        const msg = document.getElementById('msg');
+        const btn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            btn.disabled = true;
+            msg.innerHTML = "جاري إرسال الطلب...";
+            msg.className = "";
+
+            const data = {
+                name: document.getElementById('name').value,
+                coffeeType: document.getElementById('coffeeType').value,
+                quantity: document.getElementById('quantity').value
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                msg.innerHTML = "تم حفظ طلبك بنجاح في Google Sheets! ✅";
+                msg.className = "success";
+                form.reset();
+                btn.disabled = false;
+            })
+            .catch(error => {
+                msg.innerHTML = "حدث خطأ في الاتصال. حاول ثانية.";
+                msg.className = "error";
+                console.error('Error!', error.message);
+                btn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
